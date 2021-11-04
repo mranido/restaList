@@ -15,6 +15,7 @@ async function addCompany(company){
     return created.insertId;
 }
 
+
 async function activateValidation(verificationCode) {
     const now = new Date();
   
@@ -27,6 +28,19 @@ async function activateValidation(verificationCode) {
     const [resultActivation] = await pool.query(updateQuery, [now, verificationCode]);
   
     return (resultActivation.affectedRows === 1);
+  }
+
+  async function inactiveCompanyById(id){
+    const now = new Date();
+
+    const pool = await database.getPool();
+    const updateQuery =`UPDATE company
+    set deletedAt =?
+    where id = ?`
+
+    const [deleteCompany] = await pool.query(updateQuery, [now, id]);
+
+    return (deleteCompany.affectedRows===1);
   }
   
 
@@ -74,6 +88,55 @@ async function findAllCompanies() {
   return allCompanies;
 }
 
+async function findLogo(id){
+  const pool = await database.getPool();
+  const query =`SELECT logo FROM company WHERE id = ?`;
+  const [haslogo]= await pool.query(query, id);
+  
+  return haslogo[0];
+}
+
+
+async function updateLogo(id, logo){
+  const now = new Date();
+  const pool = await database.getPool();
+  const updateQuery =`UPDATE company 
+  SET logo =?, updatedAt =? 
+  WHERE id =?`;
+  const [imageCreated] = await pool.query(updateQuery, [logo, now, id]);
+
+  return imageCreated[0];
+}
+
+async function updateCompany(data){
+  const now = new Date();
+  const {id, address, companyName, email, manager, phono1, phono2, phono3, website} = data;
+
+  const pool = await database.getPool();
+
+  const updateQuery =`UPDATE company
+  set address =?, companyName=?, email =?, manager =?, phono1=?, phono2=?, phono3=?, website=?, updatedAt=?
+  where id =?`;
+
+  await pool.query(updateQuery, [address, companyName, email, manager, phono1, phono2, phono3, website, now, id]);
+
+  return true;
+}
+
+async function deleteLogo(id){
+  const now = new Date();
+
+  const pool = await database.getPool();
+
+  const updateQuery =`UPDATE company 
+  SET logo = null, updatedAt =? 
+  WHERE id =?`;
+  const [deleteImage] = await pool.query(updateQuery, [now, id]);
+
+  return deleteImage;
+
+}
+
 async function resetLink(link, id){
   const now = new Date();
   const pool = await database.getPool();
@@ -101,12 +164,17 @@ async function resetPassword(companyPassword,id) {
 module.exports = {
                 activateValidation,
                 addCompany,
+                deleteLogo,
                 findAllCompanies,
                 findCompanyById, 
+                findLogo,
                 getCompanyByEmail,
                 getCompanyByVerificationCode,
+                inactiveCompanyById,
                 login,
                 resetLink,
-                resetPassword}
+                resetPassword,
+                updateCompany,
+                updateLogo}
 
 
