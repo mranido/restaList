@@ -11,8 +11,8 @@ const schema = Joi.object({
     email: Joi.string().email().required(),
     manager: Joi.string().min(1).max(240).required(),
     phono1: Joi.string().min(4).max(20).required(),
-    phono2: Joi.string().min(0).max(20).optional(),
-    phono3:Joi.string().min(0).max(20).required(),
+    phono2: Joi.string().max(20).optional(),
+    phono3:Joi.string().max(20).optional(),
     website: Joi.string().min(6).max(50).required()
   });
 

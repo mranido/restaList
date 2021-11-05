@@ -54,7 +54,7 @@ async function sendEmailCorrectValidation(companyName, email) {
 }
 
 async function sendPasswordForgot(id, companyName, email, link) {
-  const linkActivation = `${HTTP_SERVER_DOMAIN}/api/v1/company/resetPassword?id=${id}:link=${link}`;
+  const linkActivation = `${HTTP_SERVER_DOMAIN}/api/v1/company/resetPassword?id=${id}&link=${link}`;
 
   const mailData = {
     from: SMTP_FROM,

@@ -142,7 +142,7 @@ async function resetLink(link, id){
   const pool = await database.getPool();
   const updateQuery =`UPDATE company
   SET resetLink = ?, updatedAt =?
-  where id =?`;
+  where id = ?`;
   const [updateLink] = await pool.query(updateQuery, [link, now, id]);
 
   return updateLink;

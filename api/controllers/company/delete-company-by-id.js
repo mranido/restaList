@@ -17,7 +17,7 @@ async function deleteCompanyById(req, res){
 
     const inactive = await inactiveCompanyById(id);
 
-    res.send({message: 'Tu cuenta ha sido eliminada'}, inactive).status(204);
+    res.send({message: 'Tu cuenta ha sido eliminada', inactive}).status(204);
     
     }
     catch(error){

@@ -4,6 +4,7 @@ const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const cryptoRandomString = require('crypto-random-string');
 const createJsonError =require('../../errors/create-json-error');
+const throwJsonError = require('../../errors/throw-json-error');
 
 const {addCompany, getCompanyByEmail} = require('../../repositories/companies_repository');
 const { sendEmailRegistration } = require('../../helpers/mail-smtp');

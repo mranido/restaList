@@ -43,7 +43,9 @@ CREATE TABLE IF NOT EXISTS department (
     createdAt DATETIME NOT NULL DEFAULT NOW(),
     updatedAt DATETIME NULL,
     deletedAt DATETIME NULL,
-    primary key (`id`)
+    officeId, INT NOT NULL,
+    primary key (`id`),
+    foreign key (`officeId`) references 'office' (`id`) on delete cascade
 );
 
 CREATE TABLE IF NOT EXISTS department_per_office (

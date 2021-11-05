@@ -15,8 +15,10 @@ app.use(cors());
 app.use(express.static('public'));
 
 const companiesRouter = require('./routes/companies_routes');
+const officesRouter = require('./routes/offices_routes');
 
 
 app.use('/api/v1/company/', companiesRouter );
+app.use('/api/v1/office/', officesRouter);
 
 module.exports = app;
