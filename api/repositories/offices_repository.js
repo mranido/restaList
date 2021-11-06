@@ -13,11 +13,26 @@ async function addOffice(office){
     return created.insertId;
 }
 
+async function deleteOffice(id, companyId){
+    const now = new Date();
+  
+    const pool = await database.getPool();
+  
+    const updateQuery =`UPDATE office
+    SET deletedAt=? 
+    WHERE id=?
+    AND companyId=?`;
+    const [deleteOffice] = await pool.query(updateQuery, [now, id, companyId]);
+  
+    return deleteOffice;
+  
+  }
+
 async function getOfficeByName(officeName, companyId){
     const pool = await database.getPool();
     const query = `SELECT * FROM office
-    WHERE officeName =?
-    AND companyId =?`;
+    WHERE officeName=?
+    AND companyId=?`;
     const [findOffice] = await pool.query(query,[officeName, companyId]);
 
     return findOffice[0];
@@ -26,15 +41,39 @@ async function getOfficeByName(officeName, companyId){
 async function getOfficesPerCompany(companyId){
     const pool = await database.getPool();
     const query = `SELECT * FROM office 
-    WHERE companyID =?`;
+    WHERE companyId=?`;
     const [officesPerCompany] = await pool.query(query, companyId);
 
     return officesPerCompany;
 }
 
+async function getOfficeById(id, companyId){
+    const pool = await database.getPool();
+    const query = `SELECT * FROM office
+    WHERE id=?
+    AND companyId=?`;
+    const [officeById] = await pool.query(query, [id, companyId]);
+
+    return officeById[0];
+}
+
+async function getOfficesPerManager(companyId, manager){
+    const pool = await database.getPool();
+    const query = `SELECT * FROM office
+    WHERE companyId=?
+    AND lower(manager)=?`;
+    const [officesPerManager] = await pool.query(query, [companyId, manager]);
+    
+    return officesPerManager;
+}
+
+
 
 
 
 module.exports ={addOffice,
+                deleteOffice,
                 getOfficeByName,
-                getOfficesPerCompany}
+                getOfficeById,
+                getOfficesPerCompany,
+                getOfficesPerManager}

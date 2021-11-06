@@ -3,22 +3,22 @@
 const createJsonError = require('../../errors/create-json-error');
 const throwJsonError = require('../../errors/throw-json-error');
 
-const {getOfficesPerCompany} = require('../../repositories/offices_repository');
+const {getOfficesPerManager} = require('../../repositories/offices_repository');
 
-async function getAllOfficesPerCompany (req, res){
+async function getAllOfficesPerManager (req, res){
     try {
         
         const {id: idCompany} = req.auth;
-        const {id} = req.params;
+        const {manager, id} = req.params;
 
         if(+id !== idCompany){
           throwJsonError('No tienes permiso para realizar dicha acción', 401);
         }
         
-        const allOffices = await getOfficesPerCompany(idCompany);
+        const allOffices = await getOfficesPerManager(idCompany, manager.toLowerCase());
         
-        if (!allOffices){
-            throwJsonError('No hay ninguna sucursal para esa compañía', 400);
+        if (allOffices.length ===0){
+            throwJsonError('No hay ninguna sucursal para esa compañía y ese manager', 400);
         }
 
         res.send(allOffices).status(200);
@@ -27,4 +27,4 @@ async function getAllOfficesPerCompany (req, res){
     }
 }
 
-module.exports ={getAllOfficesPerCompany};
+module.exports ={getAllOfficesPerManager};
