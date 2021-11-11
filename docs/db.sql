@@ -42,15 +42,17 @@ CREATE TABLE IF NOT EXISTS department (
     departmentName VARCHAR(255) NOT NULL,
     createdAt DATETIME NOT NULL DEFAULT NOW(),
     updatedAt DATETIME NULL,
+    companyId INT NOT NULL,
     deletedAt DATETIME NULL,
-    officeId, INT NOT NULL,
     primary key (`id`),
-    foreign key (`officeId`) references 'office' (`id`) on delete cascade
+    FOREIGN KEY (`companyId`) REFERENCES `company` (`id`) on delete cascade
 );
+
 
 CREATE TABLE IF NOT EXISTS department_per_office (
 	id INT NOT NULL AUTO_INCREMENT,
     departmentId INT NOT NULL,
+    manager VARCHAR(320) not null,
     officeId INT NOT NULL,
     companyId INT NOT NULL,
     PRIMARY KEY (`id`),

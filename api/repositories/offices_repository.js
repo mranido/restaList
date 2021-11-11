@@ -67,8 +67,20 @@ async function getOfficesPerManager(companyId, manager){
     return officesPerManager;
 }
 
-
-
+async function updateOffice(data){
+    const now = new Date();
+    const {id, companyId, address, officeName, manager, phono1} = data;
+  
+    const pool = await database.getPool();
+  
+    const updateQuery =`UPDATE office
+    set address =?, officeName=?, manager =?, phono1=?, updatedAt=?
+    where id =? and companyId =?`;
+  
+    await pool.query(updateQuery, [address, officeName, manager, phono1, now, id, companyId]);
+  
+    return true;
+  }
 
 
 module.exports ={addOffice,
@@ -76,4 +88,5 @@ module.exports ={addOffice,
                 getOfficeByName,
                 getOfficeById,
                 getOfficesPerCompany,
-                getOfficesPerManager}
+                getOfficesPerManager,
+                updateOffice}
